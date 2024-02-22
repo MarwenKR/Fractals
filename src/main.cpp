@@ -3,25 +3,40 @@
 #include <cmath>
 #include <iostream>
 
-#define Y 450
-#define X 800
+#include "include/utils.hpp"
 
-void drawPixel(float x, float y)
+void colot_template(double t, double& r, double& g,  double& b){
+    if (t> 0.2 && t<0.5) {
+        r=1.0;
+        g=t/MAX; 
+        b=t*(1-t);
+        }
+    else{
+        r=t*t;
+        g=0.0; 
+        b=t*(1-t)/MAX;}
+
+}
+void drawPixel(double x, double y, double r, double g, double b)
 {
     glBegin(GL_POINTS);
-    glVertex2f(x, y);
+    glColor3d(r,g,b);
+    glVertex2d(x, y);
     glEnd();
 }
 
-void julia_point(float x, float y, int r, int depth, int max, std::complex<double> c, std::complex<double> z)
+
+void julia_point(double x, double y, int r, int depth,int p, int max, std::complex<double> c, std::complex<double> z)
 {
     if (std::abs(z) > r)
     {
-        glColor3f(1.0f, 0.0f, 0.0f); // Red color
-        drawPixel(x, y);
-        depth = 0;
+        double t = depth<=max?(double)depth/max:0;
+        double r,g,b;
+        colot_template(t,r,g,b);
+        drawPixel(x, y,r,g,b);
+        depth = 1;
     }
-    if (std::sqrt(std::pow((x - X / 2), 2) + std::pow((y - Y / 2), 2)) > Y / 2)
+    if (std::sqrt(std::pow((x - X / 2), p) + std::pow((y - Y / 2), p)) > Y / 2)
     {
         // Do nothing, pixel out of bounds
     }
@@ -29,16 +44,19 @@ void julia_point(float x, float y, int r, int depth, int max, std::complex<doubl
     {
         return;
     }
-    julia_point(x, y, r, depth - 1, max, c, std::pow(z, 2) + c);
+    julia_point(x, y, r, depth - 1,p, max, c, std::pow(z, p) + c);
 }
 
-void juliaset(int depth, std::complex<double> c, int r, int detail)
+void juliaset(int depth,int p, std::complex<double> c, int r, int detail)
 {
-    for (float x = X / 2 - Y / 2; x < X / 2 + Y / 2; x += detail)
+    for (double x = X / 2 - Y / 2; x < X / 2 + Y / 2; x += detail)
     {
-        for (float y = 0; y < Y; y += detail)
+        for (double y = 0; y < Y; y += detail)
         {
-            julia_point(x, y, r, depth, depth, c, (2 * r * static_cast<double>(x - X / 2) / Y) + (2 * r * static_cast<double>(y - Y / 2) / Y) * std::complex<double>(0, 1));
+            double zx = 2 * r * static_cast<double>(x - X / 2) / Y ; // real part of z
+            double zy = 2 * r * static_cast<double>(y - Y / 2) / Y ; // imaginary part of z
+
+            julia_point(x, y, r, depth, p,depth, c, zx+ zy* std::complex<double>(0, 1));
         }
     }
 }
@@ -76,7 +94,7 @@ int main()
         glLoadIdentity();
 
         // Draw the Julia set
-        juliaset(1000, std::complex<double>(-0.128, 0.78), 2, 1);
+        juliaset(30, 3,std::complex<double>(-0.66, 0.05), 2, 1);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
