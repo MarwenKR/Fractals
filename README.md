@@ -21,9 +21,12 @@ To run the program:
 ---
 ### Outputs
  <p align="center">
- <img center src="images/test_0.png" width=400 height=400/> 
+ <img center src="images/test_0.png" width=300 height=250/> 
  </p>
-
+ <p align="center">
+ <img center src="images/test_1.png" width=300 height=250/> 
+ </p>
+ 
 ---
 ### Resources:
 

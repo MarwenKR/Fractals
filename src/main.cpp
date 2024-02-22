@@ -6,14 +6,14 @@
 #include "include/utils.hpp"
 
 void colot_template(double t, double& r, double& g,  double& b){
-    if (t> 0.2 && t<0.5) {
+    if (t> 0.2 && t<0.8) {
         r=1.0;
-        g=t/MAX; 
+        g=1-t/MAX; 
         b=t*(1-t);
         }
     else{
         r=t*t;
-        g=0.0; 
+        g=0.5; 
         b=t*(1-t)/MAX;}
 
 }
@@ -94,7 +94,7 @@ int main()
         glLoadIdentity();
 
         // Draw the Julia set
-        juliaset(30, 3,std::complex<double>(-0.66, 0.05), 2, 1);
+        juliaset(30, 8,std::complex<double>(-0.66, 0.05), 2, 1);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
