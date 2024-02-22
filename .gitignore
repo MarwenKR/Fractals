@@ -1,0 +1,8 @@
+#ignore out file
+out/
+
+# CMakeFiles
+CMakeFiles/
+
+#.vscode
+.vscode/
