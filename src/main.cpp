@@ -6,16 +6,9 @@
 #include "include/utils.hpp"
 
 void colot_template(double t, double& r, double& g,  double& b){
-    if (t> 0.2 && t<0.8) {
-        r=1.0;
-        g=1-t/MAX; 
-        b=t*(1-t);
-        }
-    else{
-        r=t*t;
-        g=0.5; 
-        b=t*(1-t)/MAX;}
-
+r = -std::log(t);
+g = std::min(1-t*t,0.5);
+b = 1+std::log((t));
 }
 void drawPixel(double x, double y, double r, double g, double b)
 {
@@ -30,7 +23,7 @@ void julia_point(double x, double y, int r, int depth,int p, int max, std::compl
 {
     if (std::abs(z) > r)
     {
-        double t = depth<=max?(double)depth/max:0;
+        double t = depth<=max?(double)depth/max:0.1;
         double r,g,b;
         colot_template(t,r,g,b);
         drawPixel(x, y,r,g,b);
@@ -94,7 +87,7 @@ int main()
         glLoadIdentity();
 
         // Draw the Julia set
-        juliaset(30, 8,std::complex<double>(-0.66, 0.05), 2, 1);
+        juliaset(32, 2,std::complex<double>(-0.67, 0.015),2,1);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
