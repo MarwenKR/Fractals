@@ -21,7 +21,7 @@ To run the program:
 ---
 ### Outputs
  <p align="center">
- <img center src="images/test_.png" width=500 height=337/> 
+ <img center src="images/test_0.png" width=400 height=400/> 
  </p>
 
 ---
